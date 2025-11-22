@@ -1,0 +1,6 @@
+.vscode/
+*.tar.gz
+target/
+
+N01/
+N02/

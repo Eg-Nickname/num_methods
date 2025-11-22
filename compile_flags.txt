@@ -1,0 +1,5 @@
+-Wall
+-std=c++23
+-pedantic
+-Wextra
+-I./eigen-5.0.1/
