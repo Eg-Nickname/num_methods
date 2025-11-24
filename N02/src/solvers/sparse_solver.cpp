@@ -6,7 +6,6 @@
 
 Eigen::SparseMatrix<double> gen_sparse_A(long N) {
   // matrix must be greater than 1
-  assert(N != 0);
   float64_t h = 2 / ((float64_t)N - 1.0);
 
   Eigen::SparseMatrix<double> sp_mat = Eigen::SparseMatrix<double>(N, N);
@@ -38,6 +37,7 @@ Eigen::SparseMatrix<double> gen_sparse_A(long N) {
   tripletList.push_back(Eigen::Triplet<double>(0, N - 1, 1.0 / (h * h)));
 
   sp_mat.setFromTriplets(tripletList.begin(), tripletList.end());
+  sp_mat.makeCompressed();
 
   return sp_mat;
 }

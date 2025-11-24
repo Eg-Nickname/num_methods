@@ -2,11 +2,13 @@
 
 #include "../typedefs.hpp"
 #include "../vector_gen.hpp"
+#include "Eigen/Core"
+#include "Eigen/LU"
 #include "dense_solver.hpp"
 
 Eigen::MatrixXd gen_dense_B(long N) {
   // matrix must be greater than 1
-  assert(N != 0);
+  // assert(N != 0);
   float64_t h = 2 / ((float64_t)N - 1.0);
   Eigen::MatrixXd mat = Eigen::MatrixXd::Zero(N, N);
 
@@ -39,22 +41,34 @@ Eigen::MatrixXd gen_dense_A(long N) {
   return mat;
 }
 
-Eigen::VectorXd solve_d_mat_lu(long N) {
-  auto d_mat = gen_dense_A(N);
-  auto b = gen_b_vector(N);
+Eigen::VectorXd solve_d_mat_fullpiv_lu(long N) {
+  Eigen::MatrixXd d_mat = gen_dense_A(N);
+  Eigen::VectorXd b = gen_b_vector(N);
 
-  auto dense_lu = d_mat.fullPivLu();
-
-  auto u = dense_lu.solve(b);
+  Eigen::VectorXd u = d_mat.fullPivLu().solve(b);
   return u;
 }
 
-Eigen::VectorXd solve_d_mat_qr(long N) {
-  auto d_mat = gen_dense_A(N);
-  auto b = gen_b_vector(N);
+Eigen::VectorXd solve_d_mat_partialpiv_lu(long N) {
+  Eigen::MatrixXd d_mat = gen_dense_A(N);
+  Eigen::VectorXd b = gen_b_vector(N);
 
-  auto dense_qr = d_mat.householderQr();
+  Eigen::VectorXd u = d_mat.partialPivLu().solve(b);
+  return u;
+}
 
-  auto u = dense_qr.solve(b);
+Eigen::VectorXd solve_d_mat_fullpiv_qr(long N) {
+  Eigen::MatrixXd d_mat = gen_dense_A(N);
+  Eigen::VectorXd b = gen_b_vector(N);
+
+  Eigen::VectorXd u = d_mat.fullPivHouseholderQr().solve(b);
+  return u;
+}
+
+Eigen::VectorXd solve_d_mat_partialpiv_qr(long N) {
+  Eigen::MatrixXd d_mat = gen_dense_A(N);
+  Eigen::VectorXd b = gen_b_vector(N);
+
+  Eigen::VectorXd u = d_mat.householderQr().solve(b);
   return u;
 }
