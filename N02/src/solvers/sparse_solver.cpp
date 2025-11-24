@@ -61,7 +61,6 @@ Eigen::VectorXd solve_sp_mat_qr(long N) {
   auto sp_mat = gen_sparse_A(N);
   // Requirement
   // https://libeigen.gitlab.io/eigen/docs-nightly/classEigen_1_1SparseQR.html#a5f13e65437ada7e10a85de8cd55db11d
-  sp_mat.makeCompressed();
   auto b = gen_b_vector(N);
 
   Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>

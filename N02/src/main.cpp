@@ -59,25 +59,25 @@ BenchData parse_b_flag(int argc, char **argv) {
   std::string method = argv[3];
 
   if (method == "SPARSE_LU") {
-    bd.file_header = "Sparse U";
+    bd.file_header = "n;Sparse LU;";
     bd.fn = [](long N) { solve_sp_mat_lu(N); };
   } else if (method == "SPARSE_QR") {
-    bd.file_header = "Sparse QR";
+    bd.file_header = "n;Sparse QR;";
     bd.fn = [](long N) { solve_sp_mat_qr(N); };
   } else if (method == "DENSE_FULL_LU") {
-    bd.file_header = "Dense Full Pivot LU";
+    bd.file_header = "n;Dense Full Pivot LU;";
     bd.fn = [](long N) { solve_d_mat_fullpiv_lu(N); };
   } else if (method == "DENSE_PAR_LU") {
-    bd.file_header = "Dense Partial Pivot LU";
+    bd.file_header = "n;Dense Partial Pivot LU;";
     bd.fn = [](long N) { solve_d_mat_partialpiv_lu(N); };
   } else if (method == "DENSE_FULL_QR") {
-    bd.file_header = "Dense Full Pivot QR";
+    bd.file_header = "n;Dense Full Pivot QR;";
     bd.fn = [](long N) { solve_d_mat_fullpiv_qr(N); };
-  } else if (method == "DENSE_PAR_QR") {
-    bd.file_header = "Dense QR";
+  } else if (method == "n;DENSE_PAR_QR;") {
+    bd.file_header = "n;Dense QR;";
     bd.fn = [](long N) { solve_d_mat_partialpiv_qr(N); };
   } else if (method == "SHERMAN_MORRISON") {
-    bd.file_header = "Sherman Morrison + Thomas";
+    bd.file_header = "n;Sherman Morrison;";
     bd.fn = [](long N) { solve_mat_sherman_morrison(N); };
   }
 
