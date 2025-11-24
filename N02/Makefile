@@ -88,38 +88,38 @@ target_dir:
 bench_data_dir:
 	mkdir -p bench_data
 
-.PHONY: run_sparse_lu
-run_sparse_lu: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_sparse_lu_10k
+run_sparse_lu_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_10k.csv SPARSE_LU 30 100 10000 1 40
 # 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_50k.csv SPARSE_LU 100 200 50000 1 20
 
-.PHONY: run_sparse_qr
-run_sparse_qr: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_sparse_qr_10k
+run_sparse_qr_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_qr_10k.csv SPARSE_QR 30 100 10000 1 20
 # 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_qr_10k.csv SPARSE_QR 20 50 50000 1 20
 
-.PHONY: run_dense_full_lu
-run_dense_full_lu: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_dense_full_lu_10k
+run_dense_full_lu_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_fullpiv_dense_lu_10k.csv DENSE_FULL_LU 30 100 10000 1 20
 
-.PHONY: run_dense_full_qr
-run_dense_full_qr: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_dense_full_qr_10k
+run_dense_full_qr_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_fullpiv_dense_qr_10k.csv DENSE_FULL_QR 30 100 10000 1 20
 
-.PHONY: run_dense_par_lu
-run_dense_par_lu: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_dense_par_lu_10k
+run_dense_par_lu_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_par_dense_lu_10k.csv DENSE_PAR_LU 30 100 10000 1 20
 
-.PHONY: run_dense_pqr_qr
-run_dense_par_qr: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_dense_pqr_qr_10k
+run_dense_par_qr_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_par_dense_qr_10k.csv DENSE_PAR_QR 30 100 10000 1 20
 
-.PHONY: run_sherman 
-run_sherman: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+.PHONY: run_sherman_10k 
+run_sherman_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sherman_10k.csv SHERMAN_MORRISON 30 100 10000 1 20
-# 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sherman_100k.csv SHERMAN_MORRISON 100 10 100000 1 20
 
-.PHONY: gen_data
-gen_data: run_dense_full_lu run_dense_par_lu run_dense_full_qr run_dense_par_qr
-# 	# do nothing
-# 	run_sparse_lu run_sparse_qr run_sherman 
+.PHONY: run_big_mat
+run_big_mat: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_100k.csv SPARSE_LU 100 100 100000 1 20
+	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sherman_100k.csv SHERMAN_MORRISON 100 10 100000 1 20
+
