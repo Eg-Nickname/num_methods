@@ -24,7 +24,7 @@ auto main(int argc, char **argv) -> int {
 
     std::cout << "exectute program with -b or -p flag for more info";
     return 0;
-  } else if (std::string(argv[1]) == "-b" && argc < 7) {
+  } else if (std::string(argv[1]) == "-b" && argc < 8) {
 
     std::cout
         << "Execute program: " << argv[0]
@@ -57,38 +57,35 @@ BenchData parse_b_flag(int argc, char **argv) {
   BenchData bd;
   bd.output_filename = argv[2];
   std::string method = argv[3];
-
+  std::string col_name = argv[4];
+  bd.file_header = std::string("n;") + col_name + ";";
   if (method == "SPARSE_LU") {
-    bd.file_header = "n;Sparse LU;";
     bd.fn = [](long N) { solve_sp_mat_lu(N); };
   } else if (method == "SPARSE_QR") {
-    bd.file_header = "n;Sparse QR;";
     bd.fn = [](long N) { solve_sp_mat_qr(N); };
   } else if (method == "DENSE_FULL_LU") {
-    bd.file_header = "n;Dense Full Pivot LU;";
     bd.fn = [](long N) { solve_d_mat_fullpiv_lu(N); };
   } else if (method == "DENSE_PAR_LU") {
-    bd.file_header = "n;Dense Partial Pivot LU;";
     bd.fn = [](long N) { solve_d_mat_partialpiv_lu(N); };
   } else if (method == "DENSE_FULL_QR") {
-    bd.file_header = "n;Dense Full Pivot QR;";
     bd.fn = [](long N) { solve_d_mat_fullpiv_qr(N); };
-  } else if (method == "n;DENSE_PAR_QR;") {
-    bd.file_header = "n;Dense QR;";
+  } else if (method == "DENSE_PAR_QR") {
+    std::cout << "PARQR" << std::endl;
     bd.fn = [](long N) { solve_d_mat_partialpiv_qr(N); };
   } else if (method == "SHERMAN_MORRISON") {
-    bd.file_header = "n;Sherman Morrison;";
     bd.fn = [](long N) { solve_mat_sherman_morrison(N); };
+  } else {
+    std::cout << "NO FN SELECTED" << std::endl;
   }
 
-  bd.samples = parse_num(argv[4], 10);
-  bd.samples_lower_bound = parse_num(argv[5], 10);
-  bd.samples_upper_bound = parse_num(argv[6], 1000);
+  bd.samples = parse_num(argv[5], 10);
+  bd.samples_lower_bound = parse_num(argv[6], 10);
+  bd.samples_upper_bound = parse_num(argv[7], 1000);
   bd.mesure_avg = false;
   bd.avg_ms_treshold = 10;
-  if (argc == 9) {
-    bd.mesure_avg = parse_num(argv[7], 0) == 1;
-    bd.avg_ms_treshold = parse_num(argv[8], 20);
+  if (argc == 10) {
+    bd.mesure_avg = parse_num(argv[8], 0) == 1;
+    bd.avg_ms_treshold = parse_num(argv[9], 20);
   }
   return bd;
 }
@@ -96,7 +93,7 @@ BenchData parse_b_flag(int argc, char **argv) {
 long parse_num(std::string num_str, long err_val) {
   try {
     return std::stol(num_str);
-  } catch (std::exception _) {
+  } catch (std::exception &_) {
     std::cout << "Error parsing: " << num_str << "\n";
     return err_val;
   }
