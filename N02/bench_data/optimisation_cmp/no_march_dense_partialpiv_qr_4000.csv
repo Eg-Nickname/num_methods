@@ -1,4 +1,4 @@
-Dense Partial Pivot QR
+n;Dense Partial QR No AVX;
 100;30000;
 300;256000;
 500;1041000;

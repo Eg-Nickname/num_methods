@@ -1,4 +1,4 @@
-n;Dense full pivot LU;
+n;Dense Full Pivot LU No AVX;
 100;35000;
 300;347000;
 500;1663000;

@@ -13,7 +13,7 @@ EXE_DIR = $(TARGET_DIR)/exe
 SRC_DIR = ./src
 
 # Names for object and exe files for programs
-N01_PROGRAM = main
+N02_PROGRAM = main
 HFILES = 
 
 # Misc
@@ -31,22 +31,22 @@ SOLVERS = $(SP_SOLVER) $(D_SOLVER) $(SM_SOLVER)
 
 
 # OBJECTS
-N01_PROGRAM_OBJ = $(OBJ_DIR)/$(N01_PROGRAM).o
+N02_PROGRAM_OBJ = $(OBJ_DIR)/$(N02_PROGRAM).o
 VEC_GEN_OBJ = $(OBJ_DIR)/$(VEC_GEN).o
 BENCH_OBJ = $(OBJ_DIR)/$(BENCH).o
 SOLVERS_OBJ = $(addprefix $(OBJ_DIR)/$(SOLVERS_DIR), $(addsuffix .o, $(SOLVERS)))
 
-OBJ_FILES = $(N01_PROGRAM_OBJ) $(SOLVERS_OBJ) $(VEC_GEN_OBJ) $(BENCH_OBJ)
+OBJ_FILES = $(N02_PROGRAM_OBJ) $(SOLVERS_OBJ) $(VEC_GEN_OBJ) $(BENCH_OBJ)
 DEP_FILES = $(OBJ_FILES:.o=.d)
 
 # Executables path
-N01_PROGRAM_EXE = $(EXE_DIR)/$(N01_PROGRAM).x
-EXES = $(N01_PROGRAM_EXE)
+N02_PROGRAM_EXE = $(EXE_DIR)/$(N02_PROGRAM).x
+EXES = $(N02_PROGRAM_EXE)
 
 # Compilator flags
 CFLAGS = -Wall -Wextra -std=c++23 -pedantic -I ./../eigen-5.0.1/ -I$(SRC_DIR) -O3 -march=native -DNDEBUG
 # Linker flags
-LFLAGS = 
+LFLAGS =
 # Compiler and linker
 CO = clang++
 LD = $(CO)
@@ -63,15 +63,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CO) $(CFLAGS) -c $< -o $@
 
 
-$(N01_PROGRAM_EXE): $(OBJ_FILES) 
+$(N02_PROGRAM_EXE): $(OBJ_FILES)
+	mkdir -p $(EXE_DIR)
 	$(LD) -o $@ $(LFLAGS) $^
 
 .PHONY: run
-run: $(N01_PROGRAM_EXE) Makefile target_dir
-	$(N01_PROGRAM_EXE)
+run: $(N02_PROGRAM_EXE) Makefile target_dir
+	$(N02_PROGRAM_EXE)
 
 .PHONY: compile
-compile: $(N01_PROGRAM_EXE) Makefile target_dir
+compile: $(N02_PROGRAM_EXE) Makefile target_dir
 # 	Do nothing
 
 .PHONY : clean
@@ -80,8 +81,11 @@ clean :
 
 .PHONY: target_dir
 target_dir:
+	mkdir -p $(EXE_DIR)
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/$(SOLVERS_DIR)
+
+$(EXE_DIR):
 	mkdir -p $(EXE_DIR)
 
 .PHONY: bench_data_dir
@@ -89,37 +93,47 @@ bench_data_dir:
 	mkdir -p bench_data
 
 .PHONY: run_sparse_lu_10k
-run_sparse_lu_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_10k.csv SPARSE_LU 30 100 10000 1 40
-# 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_50k.csv SPARSE_LU 100 200 50000 1 20
+run_sparse_lu_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_10k.csv SPARSE_LU "Sparse LU" 30 100 10000 1 40
 
 .PHONY: run_sparse_qr_10k
-run_sparse_qr_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_qr_10k.csv SPARSE_QR 30 100 10000 1 20
-# 	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_qr_10k.csv SPARSE_QR 20 50 50000 1 20
+run_sparse_qr_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sparse_qr_10k.csv SPARSE_QR "Sparse QR" 30 100 10000 1 20
 
 .PHONY: run_dense_full_lu_10k
-run_dense_full_lu_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_fullpiv_dense_lu_10k.csv DENSE_FULL_LU 30 100 10000 1 20
+run_dense_full_lu_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_fullpiv_dense_lu_10k.csv DENSE_FULL_LU "Dense Full Pivot LU" 30 100 10000 1 20
 
 .PHONY: run_dense_full_qr_10k
-run_dense_full_qr_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_fullpiv_dense_qr_10k.csv DENSE_FULL_QR 30 100 10000 1 20
+run_dense_full_qr_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_fullpiv_dense_qr_10k.csv DENSE_FULL_QR "Dense Full Pivot QR" 30 100 10000 1 20
 
 .PHONY: run_dense_par_lu_10k
-run_dense_par_lu_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_par_dense_lu_10k.csv DENSE_PAR_LU 30 100 10000 1 20
+run_dense_par_lu_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_par_dense_lu_10k.csv DENSE_PAR_LU "Dense Partial Pivot LU" 30 100 10000 1 20
 
-.PHONY: run_dense_pqr_qr_10k
-run_dense_par_qr_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_par_dense_qr_10k.csv DENSE_PAR_QR 30 100 10000 1 20
+.PHONY: run_dense_par_qr_10k
+run_dense_par_qr_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_par_dense_qr_10k.csv DENSE_PAR_QR "Dense Partial QR`" 30 100 10000 1 20
 
 .PHONY: run_sherman_10k 
-run_sherman_10k: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sherman_10k.csv SHERMAN_MORRISON 30 100 10000 1 20
+run_sherman_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sherman_10k.csv SHERMAN_MORRISON "Sherman Morrison" 30 100 10000 1 20
 
 .PHONY: run_big_mat
-run_big_mat: $(N01_PROGRAM_EXE) Makefile target_dir bench_data_dir
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_100k.csv SPARSE_LU 100 100 100000 1 20
-	$(N01_PROGRAM_EXE) -b ./bench_data/optimised_sherman_100k.csv SHERMAN_MORRISON 100 10 100000 1 20
+run_big_mat: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+# 	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_100k.csv SPARSE_LU "Sparse LU" 100 100 100000 1 20
+	$(N02_PROGRAM_EXE) -b ./bench_data/o3_sherman_100k.csv SHERMAN_MORRISON "Sherman Morrison" 100 10 100000 1 20
 
+.PHONY: run_O3_cmp
+run_O3_cmp: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/o3_sherman_100k.csv SHERMAN_MORRISON 100 "Sherman Morrison -O3" 10 100000 1 20
+# 	TODO ADD LU TEST
+# TODO add PROGRAM compiled without O3
+# 	$(N02_PROGRAM_EXE) -b ./bench_data/o3_sherman_100k.csv SHERMAN_MORRISON 100 "Sherman Morrison No -O3" 10 100000 1 20
+# TODO add PROGRAM compiled without O3 with LU testing
+
+.PHONY: run_march_cmp
+run_march_cmp: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimisation_cmp/march_fullpiv_dense_fullpiv_lu_4k.csv DENSE_FULL_LU "Dense Full Pivot LU AVX" 20 100 4100 1 20
+# 	$(N02_PROGRAM_EXE) -b ./bench_data/march_fullpiv_dense_partialpiv_qr_4k.csv DENSE_PAR_QR "Dense Partial QR No AVX" 20 100 4100 1 20
