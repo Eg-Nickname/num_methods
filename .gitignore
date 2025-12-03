@@ -3,5 +3,5 @@
 target/
 
 N01/
-*.pdf
+# *.pdf
 figures/

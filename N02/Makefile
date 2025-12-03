@@ -137,3 +137,12 @@ run_O3_cmp: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
 run_march_cmp: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
 	$(N02_PROGRAM_EXE) -b ./bench_data/optimisation_cmp/march_fullpiv_dense_fullpiv_lu_4k.csv DENSE_FULL_LU "Dense Full Pivot LU AVX" 20 100 4100 1 20
 # 	$(N02_PROGRAM_EXE) -b ./bench_data/march_fullpiv_dense_partialpiv_qr_4k.csv DENSE_PAR_QR "Dense Partial QR No AVX" 20 100 4100 1 20
+
+.PHONY: gen_figures
+gen_figures:
+	mkdir -p figures
+	python ./scripts/gen_big.py
+	python ./scripts/gen_combined_4k_plot.py
+	python ./scripts/gen_combined_10k_plot.py
+	python ./scripts/gen_methods_1k_plot.py
+	python ./scripts/gen_solution_cev_plot.py
