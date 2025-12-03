@@ -37,7 +37,7 @@ def gen_combined(input_files, output_file, offsets, x_start=0):
             y_pos,
             y_columns[0],
             color=color_palete[y_columns[0]],
-            fontsize=10,
+            fontsize=14,
             va="center",
         )
         mask = x > x_start
@@ -52,7 +52,7 @@ def gen_combined(input_files, output_file, offsets, x_start=0):
 
     plt.xlim(x_start, 9700)
     plt.ylim(y_min * 0.8)
-    plt.xticks(np.arange(x_start, 9341, 660))
+    plt.xticks(np.arange(x_start, 9700, 660) + 100)
 
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
@@ -66,9 +66,11 @@ def gen_combined(input_files, output_file, offsets, x_start=0):
     ax.axhline(10**6, linewidth=0.7, linestyle="--", color="#222222")
     ax.axhline(60 * 10**6, linewidth=0.7, linestyle="--", color="#222222")
 
-    ax.text(x_start + 10, 10**3 + 3 * 10**2, "1ms", va="center", ha="left")
-    ax.text(x_start + 10, 10**6 + 3 * 10**5, "1s", va="center", ha="left")
-    ax.text(x_start + 10, 60 * 10**6 + 20 * 10**6, "1m", va="center", ha="left")
+    ax.text(x_start + 10, 10**3 + 3 * 10**2, "1ms", va="center", ha="left", fontsize=14)
+    ax.text(x_start + 10, 10**6 + 3 * 10**5, "1s", va="center", ha="left", fontsize=14)
+    ax.text(
+        x_start + 10, 60 * 10**6 + 20 * 10**6, "1m", va="center", ha="left", fontsize=14
+    )
 
     # plt.legend()
     plt.subplots_adjust(
@@ -98,11 +100,12 @@ dense_y_offsets = [
     0,
     0,
     0,
+    0,
 ]
 dense_files = [
     "./bench_data/methods_10k/optimised_fullpiv_dense_qr_10k.csv",
     "./bench_data/methods_10k/optimised_fullpiv_dense_lu_10k.csv",
-    # "./bench_data/methods_10k/optimised_sparse_qr_10k.csv",
+    "./bench_data/methods_10k/optimised_sparse_qr_10k.csv",
     "./bench_data/methods_10k/optimised_par_dense_qr_10k.csv",
     "./bench_data/methods_10k/optimised_par_dense_lu_10k.csv",
 ]
