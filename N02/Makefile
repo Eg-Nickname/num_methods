@@ -122,8 +122,8 @@ run_sherman_10k: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
 
 .PHONY: run_big_mat
 run_big_mat: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir
-# 	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_100k.csv SPARSE_LU "Sparse LU" 100 100 100000 1 20
-	$(N02_PROGRAM_EXE) -b ./bench_data/o3_sherman_100k.csv SHERMAN_MORRISON "Sherman Morrison" 100 10 100000 1 20
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sparse_lu_100k.csv SPARSE_LU "Sparse LU" 100 100 100000 1 20
+	$(N02_PROGRAM_EXE) -b ./bench_data/optimised_sherman_100k.csv SHERMAN_MORRISON "Sherman Morrison" 100 100 100000 1 20
 
 .PHONY: run_O3_cmp
 run_O3_cmp: $(N02_PROGRAM_EXE) Makefile target_dir bench_data_dir

@@ -1,10 +1,8 @@
-#include <iostream>
-
+#include "dense_solver.hpp"
 #include "../typedefs.hpp"
 #include "../vector_gen.hpp"
 #include "Eigen/Core"
 #include "Eigen/LU"
-#include "dense_solver.hpp"
 
 Eigen::MatrixXd gen_dense_B(long N) {
   // matrix must be greater than 1
@@ -27,7 +25,7 @@ Eigen::MatrixXd gen_dense_B(long N) {
   return mat;
 }
 
-// A = B + uuT
+// A = B + uvT
 Eigen::MatrixXd gen_dense_A(long N) {
   auto mat = gen_dense_B(N);
   float64_t h = 2 / ((float64_t)N - 1.0);
