@@ -39,7 +39,7 @@ Celem zadania jest sprawdzenie różnych metod rozwiązania układu równań $A 
     $ b = mat(1; 0; dots.v; 0; 1) $
   ],
 )
-Program liczący rozwiązania został napisany w C++23 przy użyciu biblioteki #custom_link("https://libeigen.gitlab.io/")[Eigen] w wersji 5.0.1. Wykresy zostały stworzone w języku Python przy użyciu biblioteki matplotlib. Cały kod wykorzystywany do obliczeń oraz generowania wykresów znajduje się w repozytorium na #custom_link("https://github.com/Eg-Nickname/num_methods/tree/main/N02")[GitHub].
+Program liczący rozwiązania został napisany w C++23 przy użyciu biblioteki #custom_link("https://libeigen.gitlab.io/")[Eigen] w wersji 5.0.1. Wykresy zostały stworzone w języku Python przy użyciu biblioteki matplotlib. Cały kod wykorzystywany do obliczeń oraz generowania wykresów znajduje się w repozytorium na #custom_link("https://github.com/Eg-Nickname/num_methods/tree/main/N01")[GitHub].
 
 == Konfiguracja sprzętowa
 - Procesor: Intel i7-8650U (8) @ 4.200GHz
