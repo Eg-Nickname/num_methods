@@ -2,6 +2,6 @@
 *.tar.gz
 target/
 
-N01/
+N01-old/
 # *.pdf
 figures/
