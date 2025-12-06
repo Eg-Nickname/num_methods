@@ -16,7 +16,7 @@
 #align(center)[Jakub Kurek]
 
 = Wstęp
-Celem zadania jest sprawdzenie róznych metod rozwiązania układu równań $A u=b$
+Celem zadania jest sprawdzenie różnych metod rozwiązania układu równań $A u=b$
 
 #let diag = $(-2) / h^2$
 #let other = $1 / h^2$
@@ -47,7 +47,7 @@ Program liczący rozwiązania został napisany w C++23 przy użyciu biblioteki #
 - System operacyjny: Arch Linux 6.17.5-arch1-1
 
 == Metodyka testowania
-Wszystkie testy były wykonywane na odciążonym procesorze bezpośrednio z powłoki. Dla obliczeń trwających poniżej 20ms testy były wykonywane 10 krotnie a czas był uśredniany. Pomiary czasu były wykonywane w mikrosekundach w celu lepszego zobrazowania czasu obliczeń dla małych macierzy oraz optymalnych metod. Po wprowadzeniu optymalizacje wszystkie dalsze testy były kompilowane przy użyciu kompilatora clang++ w wersji 21.1.4 z flagami ```-Wall -Wextra -std=c++23 -pedantic -I ./../eigen-5.0.1/ -O3 -march=native -DNDEBUG```.
+Wszystkie testy były wykonywane na odciążonym procesorze bezpośrednio z powłoki. Dla obliczeń trwających poniżej 20ms testy były wykonywane 10-krotnie a czas był uśredniany. Pomiary czasu były wykonywane w mikrosekundach w celu lepszego zobrazowania czasu obliczeń dla małych macierzy oraz optymalnych metod. Po wprowadzeniu optymalizacje wszystkie dalsze testy były kompilowane przy użyciu kompilatora clang++ w wersji 21.1.4 z flagami ```-Wall -Wextra -std=c++23 -pedantic -I ./../eigen-5.0.1/ -O3 -march=native -DNDEBUG```.
 = Wstępne optymalizacje
 Najważniejszą optymalizacją poprawiające wyniki obliczeń było zastosowanie odpowiednich flag kompilatora:
 
@@ -72,7 +72,7 @@ Najważniejszą optymalizacją poprawiające wyniki obliczeń było zastosowanie
 ]
 
 #box[
-  - ```-DNDEBUG``` - wyłączenie assercji. Eigen dla macierzy o dynamicznych rozmiarach sprawdza poprawność ich rozmiaru przy użyciu assercji. Nie ma wielkiego wpływu na pojedyńcze działanie programu dla dużych macierzy, lecz może wpływać kiedy wykonujemy wiele działań na wektorach lub macierzach. Zalecane przez dokumentacje.
+  - ```-DNDEBUG``` - wyłączenie assercji. Eigen dla macierzy o dynamicznych rozmiarach sprawdza poprawność ich rozmiaru przy użyciu assercji. Nie ma wielkiego wpływu na pojedyncze działanie programu dla dużych macierzy, lecz może wpływać kiedy wykonujemy wiele działań na wektorach lub macierzach. Zalecane przez dokumentacje.
 ]
 
 \
@@ -232,7 +232,7 @@ Kolejną z omawianych metod jest rozwiązanie układu równań przy użyciu deko
 ) <par_piv_lu_data>
 
 == Householder Full Pivot QR
-Następną omawianą metodą jest dekompozycja QR z pełnym pivotingiem. Analizując wybrane dane z @full_piv_qr_data metoda rośnie w czasie $O(N^3)$ i potwierdza to teoretyczną złożoność algorytmu. W porównaniu z czasami rozkładu LU z pełnym pivotingiem (@full_piv_lu_data) jest około $1.4$ razy wolniejsza. W naszym przypadku rozwiązywania pojedyńczego rówania, rozkład QR nie oferuje wystarczających korzyści w odniesieniu do poniesionych kosztów.
+Następną omawianą metodą jest dekompozycja QR z pełnym pivotingiem. Analizując wybrane dane z @full_piv_qr_data metoda rośnie w czasie $O(N^3)$ i potwierdza to teoretyczną złożoność algorytmu. W porównaniu z czasami rozkładu LU z pełnym pivotingiem (@full_piv_lu_data) jest około $1.4$ razy wolniejsza. W naszym przypadku rozwiązywania pojedynczego rówania, rozkład QR nie oferuje wystarczających korzyści w odniesieniu do poniesionych kosztów.
 
 #figure(
   kind: "code",
@@ -731,4 +731,4 @@ Analizując dane z @100k_methods_chart oraz @100k_data rozwiązywanie równania 
 @solution_chart pokazuje rozkład wartości wektora $arrow(u)$ unormowane na przedziale $(0, 2)$. Wartości te układują się w funkcje przypominająca $-cos(x)$. Na @solution2_chart została nałożona przybliżenie stworzone przu użyciu funkcji $-cos(6.27x)/39.5 +0.0248$. Jest to oczywiście przybliżenie, lecz można o użyć w metodzie iteracyjnej jako wektor początkowy co zagwarantuje nam szybką zbierzność i przyśpieszy czas rozwiązania równania. Głebsza analiza wyników i próba znalezienia dokładniejszego przybliżenia mogła by się okazać dokładnym rozwiązaniem naszego układu równań.
 
 = Podsumowanie
-Po przeanalizowaniu wszystkich metod można zauważyć, że dobór odpowiedniej metody jest kluczową rzeczą przy rozwiązywaniu układów równań. Znajomość struktury macierzy pozwala nam zejść z czasem wykonania o 6 rzędów wielkości dla średnich macierzy. Dla dużych macierzy różnice te są jeszcze bardziej widoczne i dobór i implementacja odpowiedniej metody jest bardziej efektywna czasowo niż siłowe rozwiązanie metodami gęstymi. (Opis czasów dla macierzy 100000x100000). Analiza wynikowego wektora może umożliwić nam znalezienie funkcji przybliżającej rozwiązanie. Może być użyteczne w przypadku macierzy, których unormowany rozkład wyników będzie posiadał podobną strukture.
+Po przeanalizowaniu wszystkich metod można zauważyć, że dobór odpowiedniej metody jest kluczową rzeczą przy rozwiązywaniu układów równań. Znajomość struktury macierzy pozwala nam skrócić czas wykonania o 6 rzędów wielkości dla średnich macierzy. Dla dużych macierzy różnice te są jeszcze bardziej widoczne i dobór i implementacja odpowiedniej metody jest bardziej efektywna czasowo niż siłowe rozwiązanie metodami gęstymi. (Opis czasów dla macierzy 100000x100000). Analiza wynikowego wektora może umożliwić nam znalezienie funkcji przybliżającej rozwiązanie. Może być użyteczne w przypadku macierzy, których unormowany rozkład wyników będzie posiadał podobną strukture, tak jak w naszym przypadku.
