@@ -131,20 +131,20 @@ Wszystkie metody uzywały wspólnej funkcji ```cpp gen_desnse_A()``` (@gen_dense
 
 == Full Pivot LU
 Pierwszą z omawianych metod jest rozwiązanie układu równań przy użyciu dekompozycji LU z pełnym pivotingiem. Analizując wybrane dane z @full_piv_lu_data  metoda rośnie w czasie $O(N^3)$ co jest zgodne z teoretyczna złozonością algorytmu. Jest to bazowy wynik, do którego kolejne metody będą się odnosić.
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  Eigen::VectorXd solve_d_mat_fullpiv_lu(long N) {
-    Eigen::MatrixXd d_mat = gen_dense_A(N);
-    Eigen::VectorXd b = gen_b_vector(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   Eigen::VectorXd solve_d_mat_fullpiv_lu(long N) {
+//     Eigen::MatrixXd d_mat = gen_dense_A(N);
+//     Eigen::VectorXd b = gen_b_vector(N);
 
-    Eigen::VectorXd u = d_mat.fullPivLu().solve(b);
-    return u;
-  }
-  ```,
-  caption: [Rozwiązanie równania przy użyciu rozkładu LU z pełnym pivotem dla podanego N],
-) <solve_full_lu_code>
+//     Eigen::VectorXd u = d_mat.fullPivLu().solve(b);
+//     return u;
+//   }
+//   ```,
+//   caption: [Rozwiązanie równania przy użyciu rozkładu LU z pełnym pivotem dla podanego N],
+// ) <solve_full_lu_code>
 
 #figure(
   kind: "chart",
@@ -172,20 +172,20 @@ Pierwszą z omawianych metod jest rozwiązanie układu równań przy użyciu dek
 == Partial Pivot LU
 Kolejną z omawianych metod jest rozwiązanie układu równań przy użyciu dekompozycji LU z częściowym pivotingiem. Kosztem precyzji numerycznej zyskujemy krótszy czas wykonania. Analizując wybrane dane z @par_piv_lu_data  metoda rośnie w czasie $O(N^3)$ , lecz w porównaniu z czasami dla pełnego pivotingu (@full_piv_lu_data) czas rozwiązywania układu równań jest ponad 14-krotnie mniejszy.
 
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  Eigen::VectorXd solve_d_mat_partialpiv_lu(long N) {
-    Eigen::MatrixXd d_mat = gen_dense_A(N);
-    Eigen::VectorXd b = gen_b_vector(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   Eigen::VectorXd solve_d_mat_partialpiv_lu(long N) {
+//     Eigen::MatrixXd d_mat = gen_dense_A(N);
+//     Eigen::VectorXd b = gen_b_vector(N);
 
-    Eigen::VectorXd u = d_mat.partialPivLu().solve(b);
-    return u;
-  }
-  ```,
-  caption: [Rozwiązanie równania przy użyciu rozkładu LU z częściowym pivotingiem],
-) <solve_par_lu_code>
+//     Eigen::VectorXd u = d_mat.partialPivLu().solve(b);
+//     return u;
+//   }
+//   ```,
+//   caption: [Rozwiązanie równania przy użyciu rozkładu LU z częściowym pivotingiem],
+// ) <solve_par_lu_code>
 
 #figure(
   kind: "chart",
@@ -213,21 +213,21 @@ Kolejną z omawianych metod jest rozwiązanie układu równań przy użyciu deko
 == Householder Full Pivot QR
 Następną omawianą metodą jest dekompozycja QR z pełnym pivotingiem. Analizując wybrane dane z @full_piv_qr_data metoda rośnie w czasie $O(N^3)$ i potwierdza to teoretyczną złożoność algorytmu. W porównaniu z czasami rozkładu LU z pełnym pivotingiem (@full_piv_lu_data) jest około $1.4$ razy wolniejsza. W naszym przypadku rozwiązywania pojedynczego rówania, rozkład QR nie oferuje wystarczających korzyści w odniesieniu do poniesionych kosztów.
 
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  Eigen::VectorXd solve_d_mat_fullpiv_qr(long N) {
-    Eigen::MatrixXd d_mat = gen_dense_A(N);
-    Eigen::VectorXd b = gen_b_vector(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   Eigen::VectorXd solve_d_mat_fullpiv_qr(long N) {
+//     Eigen::MatrixXd d_mat = gen_dense_A(N);
+//     Eigen::VectorXd b = gen_b_vector(N);
 
-    Eigen::VectorXd u = d_mat.fullPivHouseholderQr().solve(b);
-    return u;
-  }
+//     Eigen::VectorXd u = d_mat.fullPivHouseholderQr().solve(b);
+//     return u;
+//   }
 
-  ```,
-  caption: [Rozwiązanie równania przy użyciu rozkładu QR z pełnym pivotem dla podanego N],
-) <solve_full_qr_code>
+//   ```,
+//   caption: [Rozwiązanie równania przy użyciu rozkładu QR z pełnym pivotem dla podanego N],
+// ) <solve_full_qr_code>
 
 #figure(
   kind: "chart",
@@ -256,20 +256,20 @@ Następną omawianą metodą jest dekompozycja QR z pełnym pivotingiem. Analizu
 
 == Householder Partial Pivot QR
 Ostatnia omawianą metoda dla macierzy gęstych jest dekompozycja QR z częściowym pivotingiem. Analizując czasy z @par_piv_qr_data metoda rośnie w czasie $O(N^3)$. Prównując ją z jej odpowiednikiem, czyli rozkładem LU z częściowym pivotingiem (@par_piv_lu_data) jest ona około $2$ razy wolniejsza. Jak w przypadku dekompozycji z pełnym pivotingiem nie oferuje ona wystarczających zysków w stosunku odpowiadającej jej metodzie z rozkładem LU.
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  Eigen::VectorXd solve_d_mat_partialpiv_qr(long N) {
-    Eigen::MatrixXd d_mat = gen_dense_A(N);
-    Eigen::VectorXd b = gen_b_vector(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   Eigen::VectorXd solve_d_mat_partialpiv_qr(long N) {
+//     Eigen::MatrixXd d_mat = gen_dense_A(N);
+//     Eigen::VectorXd b = gen_b_vector(N);
 
-    Eigen::VectorXd u = d_mat.householderQr().solve(b);
-    return u;
-  }
-  ```,
-  caption: [Rozwiązanie równania przy użyciu rozkładu QR z częściowym pivotem dla podanego N],
-) <solve_full_qr_code>
+//     Eigen::VectorXd u = d_mat.householderQr().solve(b);
+//     return u;
+//   }
+//   ```,
+//   caption: [Rozwiązanie równania przy użyciu rozkładu QR z częściowym pivotem dla podanego N],
+// ) <solve_full_qr_code>
 
 #figure(
   kind: "chart",
@@ -348,25 +348,25 @@ Obie metody uźywały wspólnej funkcji ```cpp gen_sparse_A()``` (@gen_sparse_ma
 == Sparse LU
 Pierwszą z opisywanych metod, które próbują wykorzystać wcześniej znaną strukture macierzy jest rozkład LU działający tylko na nie zerowych elementach macierzy. Dla $N < 10000$ rozkład skaluje się w przybliżeniu liniowo $O(N)$ po analizie czasów z @sparse_lu_data. Dokładniejsza analiza dla $N>10000$ zostanie przeprowadzona wspólnie z resztą względnie efektywnych metod. Dla $N<10000$ mimo uśredniania czasów dalej niewielki wpływ na efektywnośc metody posiada system operacyjny i przełączanie zadań (ostatnie pomiary nie są znacząco rosnące). Wstępnie porównując czasy dla obecnie najbardziej efektywnej metody, czyli rozkładu LU z częściowym pivotingiem dla macierzy gęstej (@par_piv_lu_data), wybranie metody rzadkiej powoduje zwiększenie wydajności dla macierzy $N=9010$ o około 5000 razy.
 
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  Eigen::VectorXd solve_sp_mat_lu(long N) {
-    auto sp_mat = gen_sparse_A(N);
-    auto b = gen_b_vector(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   Eigen::VectorXd solve_sp_mat_lu(long N) {
+//     auto sp_mat = gen_sparse_A(N);
+//     auto b = gen_b_vector(N);
 
-    Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
-        sparse_lu_solver;
-    sparse_lu_solver.analyzePattern(sp_mat);
-    sparse_lu_solver.factorize(sp_mat);
+//     Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
+//         sparse_lu_solver;
+//     sparse_lu_solver.analyzePattern(sp_mat);
+//     sparse_lu_solver.factorize(sp_mat);
 
-    auto u = sparse_lu_solver.solve(b);
-    return u;
-  }
-  ```,
-  caption: [Rozwiązanie równania przy użyciu rozkładu LU wykorzystującego rzadką postac macierzy],
-) <solve_sparse_lu_code>
+//     auto u = sparse_lu_solver.solve(b);
+//     return u;
+//   }
+//   ```,
+//   caption: [Rozwiązanie równania przy użyciu rozkładu LU wykorzystującego rzadką postac macierzy],
+// ) <solve_sparse_lu_code>
 
 #figure(
   kind: "chart",
@@ -405,25 +405,25 @@ Pierwszą z opisywanych metod, które próbują wykorzystać wcześniej znaną s
 == Sparse QR
 Drugą z oferowanych przez bibliotekę Eigen metod dekompozycji macierzy rzadkich jest zmodyfikowany rozkład QR. Analizując czasy z @sparse_lu_data zauważamy, że metoda jest około 5 razy wolniejsza niż odpowiadający jej rozkład LU. Z samych danych z tabeli ciężko stwierdzić złożonośc algorytmu, gdyż dla $N=1090$ i $N=2080$, dla 2-krotnego wzrostu, czas rośnie 2.5-krotnie. Natomiast dla macierzy $N=4060$ i $N=8020$ prawie 3-krotnie. Dokładniejsza analiza czasów wykonania i złożoności czasowej dla $N>10000$ zostanie przeprowadzona wspólnie z resztą względnie efektywnych metod.
 
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  Eigen::VectorXd solve_sp_mat_lu(long N) {
-    auto sp_mat = gen_sparse_A(N);
-    auto b = gen_b_vector(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   Eigen::VectorXd solve_sp_mat_lu(long N) {
+//     auto sp_mat = gen_sparse_A(N);
+//     auto b = gen_b_vector(N);
 
-    Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
-        sparse_lu_solver;
-    sparse_lu_solver.analyzePattern(sp_mat);
-    sparse_lu_solver.factorize(sp_mat);
+//     Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
+//         sparse_lu_solver;
+//     sparse_lu_solver.analyzePattern(sp_mat);
+//     sparse_lu_solver.factorize(sp_mat);
 
-    auto u = sparse_lu_solver.solve(b);
-    return u;
-  }
-  ```,
-  caption: [Rozwiązanie równania przy użyciu rozkładu QR wykorzystującego rzadką postac macierzy],
-) <solve_sparse_qr_code>
+//     auto u = sparse_lu_solver.solve(b);
+//     return u;
+//   }
+//   ```,
+//   caption: [Rozwiązanie równania przy użyciu rozkładu QR wykorzystującego rzadką postac macierzy],
+// ) <solve_sparse_qr_code>
 
 #figure(
   kind: "chart",
@@ -465,85 +465,85 @@ Drugą z oferowanych przez bibliotekę Eigen metod dekompozycji macierzy rzadkic
 Nasza macierz $A$ posiada struktóre trójdagonalną co pozwala nam skorzystać z algorytmu Thomasa (brak zer na głównej diagonali), który sprowadza liczbę operacji do minimum i pozwala rozwiązać układ rówań w czasie $O(N)$.
 
 == Implementacja algorytmu
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  class ThomasSolver {
-    Eigen::VectorXd y;
-    Eigen::VectorXd z;
-    Eigen::VectorXd c;
-    /// Creates Thomas Solver for three diag matrix
-    /// x upper diag 1 - N-1 (a_N is ignored)
-    /// y diag 1 - N
-    /// z lower diag 2 - N (c_1 is ignored)
-  public:
-    // Based on: https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
-    ThomasSolver(Eigen::VectorXd &&x, Eigen::VectorXd &&y, Eigen::VectorXd &&z)
-        : y(std::move(y)), z(std::move(z)) {
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   class ThomasSolver {
+//     Eigen::VectorXd y;
+//     Eigen::VectorXd z;
+//     Eigen::VectorXd c;
+//     /// Creates Thomas Solver for three diag matrix
+//     /// x upper diag 1 - N-1 (a_N is ignored)
+//     /// y diag 1 - N
+//     /// z lower diag 2 - N (c_1 is ignored)
+//   public:
+//     // Based on: https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
+//     ThomasSolver(Eigen::VectorXd &&x, Eigen::VectorXd &&y, Eigen::VectorXd &&z)
+//         : y(std::move(y)), z(std::move(z)) {
 
-      long N = this->y.size();
-      this->c = Eigen::VectorXd(N);
+//       long N = this->y.size();
+//       this->c = Eigen::VectorXd(N);
 
-      this->c(0) = x(0) / this->y(0);
-      for (long i = 1; i < this->y.size(); i++) {
-        this->c(i) = x(i) / (this->y(i) - this->z(i) * this->c(i - 1));
-      }
-    }
+//       this->c(0) = x(0) / this->y(0);
+//       for (long i = 1; i < this->y.size(); i++) {
+//         this->c(i) = x(i) / (this->y(i) - this->z(i) * this->c(i - 1));
+//       }
+//     }
 
-    Eigen::VectorXd solve(const Eigen::VectorXd &b) const {
-      auto N = this->y.size();
-      assert(b.size() == N);
-      Eigen::VectorXd d = Eigen::VectorXd::Zero(N);
+//     Eigen::VectorXd solve(const Eigen::VectorXd &b) const {
+//       auto N = this->y.size();
+//       assert(b.size() == N);
+//       Eigen::VectorXd d = Eigen::VectorXd::Zero(N);
 
-      d(0) = b(0) / y(0);
-      // Calculate coefficients in forwoard sweep
-      for (long i = 1; i < this->y.size(); i++) {
-        d(i) = (b(i) - this->z(i) * d(i - 1)) /
-               (this->y(i) - this->z(i) * this->c(i - 1));
-      }
+//       d(0) = b(0) / y(0);
+//       // Calculate coefficients in forwoard sweep
+//       for (long i = 1; i < this->y.size(); i++) {
+//         d(i) = (b(i) - this->z(i) * d(i - 1)) /
+//                (this->y(i) - this->z(i) * this->c(i - 1));
+//       }
 
-      auto x = Eigen::VectorXd(N);
-      // Backsubstitute for x_n
-      x(this->y.size() - 1) = d(N - 1);
-      for (long i = N - 2; i >= 0; i--) {
-        x(i) = d(i) - c(i) * x(i + 1);
-      }
+//       auto x = Eigen::VectorXd(N);
+//       // Backsubstitute for x_n
+//       x(this->y.size() - 1) = d(N - 1);
+//       for (long i = N - 2; i >= 0; i--) {
+//         x(i) = d(i) - c(i) * x(i + 1);
+//       }
 
-      return x;
-    }
-  };
-  ```,
-  caption: [Własna implementacja algorytmu Thomasa],
-) <thomas_solver_code>
+//       return x;
+//     }
+//   };
+//   ```,
+//   caption: [Własna implementacja algorytmu Thomasa],
+// ) <thomas_solver_code>
 
-#figure(
-  kind: "code",
-  supplement: [Kod],
-  ```cpp
-  ThomasSolver create_solver_for_A(long N) {
-    Eigen::VectorXd a = Eigen::VectorXd::Zero(N);
-    Eigen::VectorXd b = Eigen::VectorXd::Zero(N);
-    Eigen::VectorXd c = Eigen::VectorXd::Zero(N);
+// #figure(
+//   kind: "code",
+//   supplement: [Kod],
+//   ```cpp
+//   ThomasSolver create_solver_for_A(long N) {
+//     Eigen::VectorXd a = Eigen::VectorXd::Zero(N);
+//     Eigen::VectorXd b = Eigen::VectorXd::Zero(N);
+//     Eigen::VectorXd c = Eigen::VectorXd::Zero(N);
 
-    float64_t h = 2 / ((float64_t)N - 1.0);
+//     float64_t h = 2 / ((float64_t)N - 1.0);
 
-    for (long n = 0; n < N; n++) {
-      a(n) = 1.0 / (h * h);
-      b(n) = -2.0 / (h * h);
-      c(n) = 1.0 / (h * h);
-    }
-    a(0) = 0;
-    c(N - 1) = 0;
-    b(0) = 1;
-    b(N - 1) = 1;
+//     for (long n = 0; n < N; n++) {
+//       a(n) = 1.0 / (h * h);
+//       b(n) = -2.0 / (h * h);
+//       c(n) = 1.0 / (h * h);
+//     }
+//     a(0) = 0;
+//     c(N - 1) = 0;
+//     b(0) = 1;
+//     b(N - 1) = 1;
 
-    return ThomasSolver(std::move(a), std::move(b), std::move(c));
-  }
+//     return ThomasSolver(std::move(a), std::move(b), std::move(c));
+//   }
 
-  ```,
-  caption: [Solver dla macierzy A],
-) <thomas_a_solver_code>
+//   ```,
+//   caption: [Solver dla macierzy A],
+// ) <thomas_a_solver_code>
 
 == Analiza wyników algorytmu Thomasa
 Wykorzystanie rozwiązania wykorzystującego specyfikę naszej macierzy jesteśmy w stanie znajdować rozwiązanie układu w czasie $O(N)$ (@thomas_data). W prównaniu dla rzadkiego rozkładu LU (@sparse_lu_data) czasy rozwiązań są około 20 razy krótsze. Dla macierzy $N=9670$ wykorzystanie alorytmu Thomasa. Mimo powtarzania i uśredniania czasów rozwązań, dla macierzy $4000<N<8000$ osylują wokół jednego czasu, co wskazuje na duży wpływ systemu peracyjnego na rozwiazania, w tak krótkim czasie.
