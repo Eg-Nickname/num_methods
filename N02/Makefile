@@ -146,3 +146,7 @@ gen_figures:
 	python ./scripts/gen_combined_10k_plot.py
 	python ./scripts/gen_methods_1k_plot.py
 	python ./scripts/gen_solution_cev_plot.py
+
+.PHONY:  tar
+tar: clean
+	(cd ../; tar -cvzf $(DIR).tar.gz  $(DIR) )
