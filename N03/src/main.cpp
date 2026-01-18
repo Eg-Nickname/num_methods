@@ -1,6 +1,7 @@
 #include "Eigen/Core"
 #include <algorithm>
 #include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -172,6 +173,9 @@ calc_biggest_eigen_vals_power(ThreeDiagMat mat, std::uint32_t vals_count) {
         double val = y_n.dot(mat * y_n);
         solutions.push_back(std::make_pair(val, y_n));
 
+        std::cout << "Biggest power ev_i=" << i << " iters=" << iter
+                  << std::endl;
+
         // Make approximations dependant on final eigenvalue
         for (auto &[_, a] : approx) {
             a = std::abs(std::abs(a) - std::abs(val));
@@ -209,11 +213,9 @@ calc_smallest_eigen_vals_power(ThreeDiagMat mat, std::uint32_t vals_count) {
                 z_n = z_n - proj(vec, z_n);
             }
 
-            // approx.push_back({iter, 1.0 / (y_n.dot(thomas.solve(y_n)))});
             approx.push_back({iter, 1.0 / z_n.norm()});
             z_n.normalize();
 
-            // It make sense
             if (std::abs(y_n.dot(z_n)) > 1.0 - eps)
                 break;
 
@@ -228,8 +230,10 @@ calc_smallest_eigen_vals_power(ThreeDiagMat mat, std::uint32_t vals_count) {
         for (auto &[_, a] : approx) {
             a = std::abs(std::abs(a) - std::abs(val));
         }
-        save_to_file("./data/samllest_iter_power" + std::to_string(i) + ".csv",
+        save_to_file("./data/smallest_iter_power" + std::to_string(i) + ".csv",
                      {"N", "Approx"}, approx);
+        std::cout << "Smallest power ev_i=" << i << " iters=" << iter
+                  << std::endl;
     }
 
     return solutions;
@@ -255,41 +259,45 @@ calc_smallest_eigen_vals_ray(ThreeDiagMat mat, std::uint32_t vals_count) {
 
         double sigma = 0;
         do {
-            if (iter < 12) {
+            // Start with normal power method to redirect solution
+            if (iter < 3) {
                 ThomasSolver thomas(mat);
                 z_n = thomas.solve(y_n);
             } else {
                 sigma = y_n.dot(mat * y_n);
-
                 ThreeDiagMat shifted = mat;
                 shifted.add_diag(-sigma);
                 ThomasSolver thomas(shifted);
                 z_n = thomas.solve(y_n);
             }
 
+            // Orthogonalise with previous eigenvectors
             for (auto &[val, vec] : solutions) {
                 z_n = z_n - proj(vec, z_n);
             }
-
-            // approx.push_back({iter, sigma});
-            approx.push_back({iter, 1.0 / z_n.norm()});
             z_n.normalize();
 
             if (std::abs(y_n.dot(z_n)) > 1.0 - eps)
                 break;
 
+            approx.push_back({iter, sigma});
             y_n = z_n;
             iter++;
         } while (iter < max_iter);
 
+        // Calc eigen vall and add it to solutions
         double val = y_n.dot(mat * y_n);
         solutions.push_back(std::make_pair(val, y_n));
+
+        std::cout << "Smallest ray ev_i=" << i << " iters=" << iter
+                  << std::endl;
 
         // Make approximations dependant on final eigenvalue
         for (auto &[_, a] : approx) {
             a = std::abs(std::abs(a) - std::abs(val));
         }
-        save_to_file("./data/samllest_iter_ray" + std::to_string(i) + ".csv",
+        // Save data to file
+        save_to_file("./data/smallest_iter_ray" + std::to_string(i) + ".csv",
                      {"N", "Approx"}, approx);
     }
 
@@ -302,7 +310,7 @@ calc_biggest_eigen_vals_ray(ThreeDiagMat mat, std::uint32_t vals_count) {
     vals_count = std::min((std::uint32_t)mat.size(), vals_count);
     std::vector<std::pair<double, Eigen::VectorXd>> solutions{};
 
-    double eps = 1e-8;
+    double eps = 1e-10;
     std::uint32_t max_iter = 4000;
 
     // Loop for every eigenvalue
@@ -315,7 +323,7 @@ calc_biggest_eigen_vals_ray(ThreeDiagMat mat, std::uint32_t vals_count) {
 
         double sigma = 0;
         do {
-            if (iter < 16) {
+            if (iter < 4) {
                 z_n = mat * y_n;
                 sigma = y_n.dot(mat * y_n);
             } else {
@@ -343,6 +351,8 @@ calc_biggest_eigen_vals_ray(ThreeDiagMat mat, std::uint32_t vals_count) {
         double val = y_n.dot(mat * y_n);
         solutions.push_back(std::make_pair(val, y_n));
 
+        std::cout << "Biggest ray ev_i=" << i << " iters=" << iter << std::endl;
+
         // Make approximations dependant on final eigenvalue
         for (auto &[_, a] : approx) {
             a = std::abs(std::abs(a) - std::abs(val));
@@ -355,11 +365,8 @@ calc_biggest_eigen_vals_ray(ThreeDiagMat mat, std::uint32_t vals_count) {
 }
 
 auto main() -> int {
-    calc_biggest_eigen_vals_power(gen_mat(500), 2);
     calc_biggest_eigen_vals_ray(gen_mat(500), 2);
-    // auto ans = calc_smallest_eigen_vals_ray(gen_mat(500), 4);
-    auto ans = calc_smallest_eigen_vals_power(gen_mat(500), 4);
-    for (auto &[eval, evec] : ans) {
-        std::cout << eval << "\n";
-    }
+    calc_biggest_eigen_vals_power(gen_mat(500), 2);
+    calc_smallest_eigen_vals_ray(gen_mat(500), 4);
+    calc_smallest_eigen_vals_power(gen_mat(500), 4);
 }
