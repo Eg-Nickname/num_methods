@@ -4,4 +4,5 @@ target/
 
 N01-old/
 # *.pdf
-figures/
+N01/figures/
+N02/figures/
