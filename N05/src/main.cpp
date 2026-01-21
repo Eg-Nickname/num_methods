@@ -6,8 +6,8 @@
 
 std::deque<std::pair<double, double>>
 gen_init_points(std::uint32_t points, std::function<double(double)> fn) {
-    double l = -M_PI_2;
-    double r = M_PI_2;
+    double l = -std::numbers::pi / 2.0;
+    double r = std::numbers::pi / 2.0;
     // Pairs of x and f(x)
     std::deque<std::pair<double, double>> points_q;
     double step = (r - l) / (double)(points - 1);
@@ -18,9 +18,10 @@ gen_init_points(std::uint32_t points, std::function<double(double)> fn) {
     }
     return points_q;
 }
-
+int EVALS = 0;
 double f(double x) {
     double sinx = std::sin(x);
+    EVALS += 1;
     return std::exp(sinx * sinx);
 }
 
@@ -59,6 +60,7 @@ double integrate_tapezoid(std::function<double(double)> fn) {
         // swap deque
         iter_q = std::move(temp_q);
     }
+    std::cout << "Integrated function evals " << iter_q.size() << "\n";
     return I_n1;
 }
 
@@ -77,7 +79,7 @@ double integrate_simpson(std::function<double(double)> fn) {
         I_n = I_n1;
         I_n1 = 0;
         // calculate I_n1 from simpson method
-        while (iter_q.size() >= 3) {
+        while (iter_q.size() >= 2) {
             auto p1 = iter_q.front();
             iter_q.pop_front();
             auto p2 = iter_q.front();
@@ -103,6 +105,7 @@ double integrate_simpson(std::function<double(double)> fn) {
         // swap deque
         iter_q = std::move(temp_q);
     }
+    std::cout << "Integrated function evals " << iter_q.size() << "\n";
     return I_n1;
 }
 
@@ -152,11 +155,20 @@ double integrate_38(std::function<double(double)> fn) {
         // swap deque
         iter_q = std::move(temp_q);
     }
+    std::cout << "Integrated function evals " << iter_q.size() << "\n";
     return I_n1;
 }
 
 auto main() -> int {
-    std::cout << "Hello integrating!" << std::endl;
-    std::cout << std::setprecision(12) << integrate_38(f);
+    std::cout << std::setprecision(12) << integrate_tapezoid(f) << "\n";
+    std::cout << "Function was calculated " << EVALS << " times \n";
+    EVALS = 0;
+    std::cout << std::setprecision(12) << integrate_simpson(f) << "\n";
+    std::cout << "Function was calculated " << EVALS << " times \n";
+    EVALS = 0;
+
+    std::cout << std::setprecision(12) << integrate_38(f) << "\n";
+    std::cout << "Function was calculated " << EVALS << " times \n";
+
     return 0;
 }
