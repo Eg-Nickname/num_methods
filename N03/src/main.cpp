@@ -329,8 +329,10 @@ calc_biggest_eigen_vals_ray(ThreeDiagMat mat, std::uint32_t vals_count) {
             } else {
                 sigma = y_n.dot(mat * y_n);
                 ThreeDiagMat shifted = mat;
-                double perturbation = (iter % 2 == 0) ? 1e-10 : -1e-10;
-                shifted.add_diag(-(sigma + perturbation) * 1.01);
+                // We "have to" multiply the sigma to ensure we are converging
+                // to the biggest eigen value, as if sigma isnt big enough we
+                // could converge to some k eigen val
+                shifted.add_diag(-(sigma) * 1.01);
                 ThomasSolver thomas(shifted);
                 z_n = thomas.solve(y_n);
             }

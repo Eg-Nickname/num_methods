@@ -42,9 +42,9 @@ def gen_biggest_plot():
             df["N"], df["Approx"], color=power_color_palete[i], alpha=0.6, label=label
         )
 
-    plt.title(
-        "Porównanie Metofy Rayleigha i Metody Potęgowej dla największych wartości własnych"
-    )
+    # plt.title(
+    #     "Porównanie Metody Rayleigha i Metody Potęgowej dla największych wartości własnych"
+    # )
     plt.xlabel("N")
     plt.ylabel("Approx")
     plt.yscale("log")
@@ -95,9 +95,9 @@ def gen_smallest_plot():
             df["N"], df["Approx"], color=power_color_palete[i], alpha=0.6, label=label
         )
 
-    plt.title(
-        "Porównanie Metofy Rayleigha i Metody Potęgowej dla najmniejszych wartości własnych"
-    )
+    # plt.title(
+    #     "Porównanie Metody Rayleigha i Metody Potęgowej dla najmniejszych wartości własnych"
+    # )
     plt.xlabel("N")
     plt.ylabel("Approx")
     plt.yscale("log")
