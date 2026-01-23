@@ -82,7 +82,7 @@ class ThomasSolver {
     }
 };
 
-/// Generate matrix
+/// Generate Jacobian Matrix for Damped multidimentional newton methodS
 ThreeDiagMat gen_jacobian(Eigen::VectorXd u) {
     const std::uint32_t N = u.size();
     // In task we have N+1 functions so our N is N+1 from task.
@@ -109,6 +109,7 @@ ThreeDiagMat gen_jacobian(Eigen::VectorXd u) {
     return ThreeDiagMat(std::move(ud), std::move(md), std::move(ld));
 }
 
+// Evaluate our system of equations with guess vector
 Eigen::VectorXd calculate_g(const Eigen::VectorXd &u) {
     const std::uint32_t N = u.size();
     double h = 20.0 / ((double)N - 2.0);
@@ -123,25 +124,25 @@ Eigen::VectorXd calculate_g(const Eigen::VectorXd &u) {
     return g;
 }
 
-Eigen::VectorXd damped_newton_solve() {
-    std::uint32_t N = 999;
-    Eigen::VectorXd u = Eigen::VectorXd::Zero(N);
+Eigen::VectorXd calculate_big_g(const Eigen::VectorXd &u) {
+    return 1 / 2 * u.transpose() * u;
+}
 
-    for (std::uint32_t i = 0; i < N; ++i) {
-        u[i] = 1;
-    }
-    u[0] = 0;
+Eigen::VectorXd damped_newton_solve(Eigen::VectorXd &&init_u) {
+    std::uint32_t N = init_u.size();
 
-    const double epsilon = 1e-6;
-    const std::uint32_t iter_max = 500;
+    Eigen::VectorXd u = std::move(init_u);
+
+    const double epsilon = 1e-8;
+    const std::uint32_t iter_max = 1000;
     std::uint32_t iter = 0;
     Eigen::VectorXd g;
 
     while (iter < iter_max) {
         g = calculate_g(u);
         // Check if our residual is smaller then tolerance
-        double current_norm = g.norm();
-        if (current_norm < epsilon)
+        double g_norm = g.norm();
+        if (g_norm < epsilon)
             break;
 
         ThreeDiagMat J = gen_jacobian(u);
@@ -152,20 +153,23 @@ Eigen::VectorXd damped_newton_solve() {
 
         Eigen::VectorXd u_test;
 
+        double current_G_value = 1.0 / 2.0 * g_norm * g_norm;
         bool accepted = false;
         double w = 1.0;
         while (w > 1e-4) {
             u_test = u - w * delta_u;
 
             Eigen::VectorXd g_test = calculate_g(u_test);
-            double test_norm = g_test.norm();
 
-            if (test_norm < current_norm) {
+            auto g_test_norm = g_test.norm();
+            // Minimising big G function 1/2 g^T dot g = 1/2 norm(g)^2
+            double test_G_value = 1.0 / 2.0 * g_test_norm * g_test_norm;
+            if (test_G_value < current_G_value) {
                 u = u_test;
                 accepted = true;
                 break;
             } else {
-                w /= 2.0;
+                w *= 0.5;
             }
         }
 
@@ -197,10 +201,35 @@ void save_to_file(std::string filename, Eigen::VectorXd u) {
 }
 
 auto main() -> int {
-    // std::cout << "Hello N07" << std::endl;
-    // solve_system_of_equations_newton();
-    // solve_system_of_equations_damped();
-    auto u = damped_newton_solve();
-    save_to_file("./data/u_n.csv", u);
+    // Important that for our initial guess we provide u_0 = 0 and u_N = 1
+    // Eigen::VectorXd u = Eigen::VectorXd::Zero(N);
+    // for (std::uint32_t i = 0; i < N; ++i) {
+    //     u[i] = i / (double)N;
+    // }
+    const uint32_t N = 999;
+    Eigen::VectorXd zeroed_u = Eigen::VectorXd::Zero(N);
+    zeroed_u[N - 1] = 1;
+    Eigen::VectorXd oned_u = Eigen::VectorXd::Ones(N);
+    oned_u[0] = 1;
+    Eigen::VectorXd random_u = Eigen::VectorXd::Random(N);
+    random_u[0] = 0;
+    random_u[N - 1] = 1;
+    Eigen::VectorXd linear_u = Eigen::VectorXd::Zero(N);
+    for (std::uint32_t i = 0; i < N; ++i) {
+        linear_u[i] = i / (double)N;
+    }
+    linear_u[0] = 0;
+    linear_u[N - 1] = 1;
+
+    auto zeroed_u_sol = damped_newton_solve(std::move(zeroed_u));
+    auto oned_u_sol = damped_newton_solve(std::move(oned_u));
+    auto random_u_sol = damped_newton_solve(std::move(random_u));
+    auto linear_u_sol = damped_newton_solve(std::move(linear_u));
+
+    std::cout << "Saving solution vector to file" << std::endl;
+    save_to_file("./data/zeroed_u_n.csv", zeroed_u_sol);
+    save_to_file("./data/oned_u_n.csv", oned_u_sol);
+    save_to_file("./data/linear_u_n.csv", linear_u_sol);
+    save_to_file("./data/random_u_n.csv", random_u_sol);
     return 0;
 }

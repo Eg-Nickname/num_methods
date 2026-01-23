@@ -3,10 +3,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-df = pd.read_csv("./data/u_n.csv", delimiter=";")
+df_zeroed = pd.read_csv("./data/zeroed_u_n.csv", delimiter=";")
+df_oned = pd.read_csv("./data/oned_u_n.csv", delimiter=";")
+df_random = pd.read_csv("./data/random_u_n.csv", delimiter=";")
+df_linear = pd.read_csv("./data/linear_u_n.csv", delimiter=";")
 
 plt.figure(figsize=(10, 6))
-plt.plot(df["u_n"], label="$u_n$", color="#6929c4")
+plt.plot(df_oned["u_n"], label="$u_n$ jeden", color="#6929c4")
+plt.plot(df_linear["u_n"], label="$u_n$ losowe", color="#3ddbd9")
+plt.plot(df_zeroed["u_n"], label="$u_n$ zero", color="#0072c3")
+plt.plot(
+    df_random["u_n"],
+    label="$u_n$ liniowe",
+    color="#005d5d",
+)
+
+
 plt.xlabel("N")
 plt.ylabel("$u_n$")
 
@@ -16,7 +28,6 @@ ax.spines["right"].set_visible(False)
 ax.spines["top"].set_visible(False)
 
 
-plt.ylim(0.0, 1.05)
 plt.xlim(0.0, 1000.05)
 
 
