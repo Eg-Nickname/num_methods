@@ -5,7 +5,6 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -295,3 +294,14 @@ auto main() -> int {
 
     return 0;
 }
+
+std::pair<long, long double> find_min_errorr(
+    std::function<std::vector<std::pair<long double, long double>>(
+        std::uint32_t, std::function<long double(long double)>)>
+        node_gen_fn,
+
+    std::function<std::vector<std::pair<long double, long double>>(
+        std::vector<std::pair<long double, long double>> &, std::uint32_t)>
+        point_gen_fn,
+
+    std::string error_file = "");

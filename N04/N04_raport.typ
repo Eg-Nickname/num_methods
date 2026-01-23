@@ -141,6 +141,7 @@ Dla węzłów równoodległych najbardziej optymalny był wielomian dla $N=8$ z 
   ],
 ) <polynomial_equal_points_plot>
 
+#pagebreak()
 Dla węzłów Czebyszewa najbardziej optymalny był wielomian dla $N=30$ z $Delta f(x) = 0.00616472$
 
 #figure(
@@ -152,15 +153,15 @@ Dla węzłów Czebyszewa najbardziej optymalny był wielomian dla $N=30$ z $Delt
   ],
 ) <polynomial_czebyszew_points_plot>
 
-== Porównanie metod doboru wezłów interpolacyjnych, korzystając bezpośrednio ze wzoru
-Dla węzłów równoodległych również najbardziej optymalny był wielomian z $N=8$ i odpowiadający @polynomial_equal_points_plot. Dużo lepszą dokładność jednak dostaliśmy korzystając z węzłów Czebyszewa gdzie najbardziej optymalna aproksymacja była dla $N=222$ węzłów a $Delta f(x) = 1.30104*10^-(18)$.
+== Porównanie metod doboru wezłów interpolacyjnych, korzystając bezpośrednio ze wzoru interpolacyjnego
+Dla węzłów równoodległych również najbardziej optymalny był wielomian z $N=8$ i odpowiadający mu @polynomial_equal_points_plot. Dużo lepszą dokładność jednak dostaliśmy korzystając z węzłów Czebyszewa gdzie najbardziej optymalna aproksymacja była dla $N=222$ węzłów a $Delta f(x) = 1.30104 dot 10^(-18)$.
 
 #figure(
   kind: "plot",
   supplement: [Wykres],
   image("./figures/direct_czebyszew_plot.jpg"),
 
-  caption: [Interpolacji wielomianem Lagrange'a
+  caption: [Interpolacja wielomianem Lagrange'a
   ],
 ) <direct_czebyszew_points_plot>
 
@@ -190,7 +191,7 @@ Rozwiązaniem dla szybko pojawiających się oscylacji Rungego dla równoodlęg�
   ],
 ) <errors_plot>
 
-@errors_plot pokazuje jak zmieniają się błędy $Delta f$ w zależności od ilości węzłów interpolacji. Dla obu metod z współczynnikami wielomianu najpierw błąd maleje, aż w pewnym momencie zaczyna rosnąć logarytmicznie do nieskończoności, odpowiednio są to $N=10$ i $N=30$ dla węzłów równoodległych oraz węzłów Czebyszewa. Dla węzłów równoodległych brak zwiększenia dokładności  powodują oscylacje Rungego, natomiast dla węzłów Czebyszewa problemem staje się dokładność numeryczna. Dopiero wyliczanie punktów bezpośrednio z wzoru Lagrange dla każdego punktu rozwiązuje ten problem. Zmniejszanie dokładności kończy się dla $N=222$ i nastepuje stagnacja spowodowana skończoną dokładnością numeryczną, od tego punktu wartości oscylują wokoło wartości $2 dot 10^(-18)$.
+@errors_plot pokazuje jak zmieniają się błędy $Delta f$ w zależności od ilości węzłów interpolacji. Dla obu metod z współczynnikami wielomianu najpierw błąd maleje, aż w pewnym momencie zaczyna rosnąć logarytmicznie do nieskończoności, odpowiednio są to $N=10$ i $N=30$ dla węzłów równoodległych oraz węzłów Czebyszewa. Dla węzłów równoodległych brak zwiększenia dokładności  powodują oscylacje Rungego, natomiast dla węzłów Czebyszewa problemem staje się dokładność numeryczna bezpośredniego wyliczania współczynników wielomianu. Dopiero wyliczanie punktów bezpośrednio z wzoru Lagrange dla każdego punktu rozwiązuje ten problem. Zmniejszanie dokładności kończy się dla $N=222$ i nastepuje stagnacja spowodowana skończoną dokładnością numeryczną, od tego punktu wartości oscylują wokoło wartości $2 dot 10^(-18)$.
 
 = Podsumowanie
-Jeśli to tylko możliwe nie powinniśmy używać węzłów równo rozmieszonych i zastąpić je węzłami Czebyszewa, które zmniejszają oscylacje Rungego. Dla dużych wielomianów znaczenie przejmują błędy numeryczne i to one psują interpolację w przyadku węzłów Czebyszewa. Najlepszym rozwiązaniem jest liczenie interpolowanych punktów bezpośrednio ze wzoru Lagrange'a wykorzystując jego właściwości i zmniejszając koszt obliczeń do $O(N^2 + M dot N)$ gdzie dla dostateczine dużych ilość interpolowanych punktów metoda ta ma złożoność $N(O(M dot N))$, gdyż człon z $N^2$ staje się zaniedbywalnie mały.
+Jeśli to tylko możliwe nie powinniśmy używać węzłów równo rozmieszonych i zastąpić je węzłami Czebyszewa, które zmniejszają oscylacje Rungego. Dla dużych wielomianów znaczenie przejmują błędy numeryczne i to one psują interpolację w przyadku węzłów Czebyszewa. Najlepszym rozwiązaniem jest liczenie interpolowanych punktów bezpośrednio ze wzoru Lagrange'a wykorzystując jego właściwości i zmniejszając koszt obliczeń do $O(N^2 + M dot N)$ gdzie dla dostateczine dużych ilość interpolowanych punktów metoda ta ma złożoność $O(M dot N)$, gdyż człon z $N^2$ staje się zaniedbywalnie mały.

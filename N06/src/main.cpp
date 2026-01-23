@@ -74,7 +74,7 @@ class Laguerre {
             } else {
                 z_n1 = z_n - ((n * p_z) / m1);
             }
-        } while (std::abs(z_n - z_n1) > 1e-8);
+        } while (std::abs(z_n - z_n1) > 1e-6);
 
         return z_n1;
     }
@@ -87,6 +87,7 @@ std::vector<complex> lag(const Eigen::VectorXcd &coef) {
     // We dont need to smooth first root
     roots.push_back(P.solve());
 
+    // deflate before loop
     Eigen::VectorXcd cur_coef = deflate(roots.back(), coef);
     while (cur_coef.size() > 3) {
         // Calculate root
