@@ -1,7 +1,0 @@
-Eigen val of mat A  is approx: 6 1
-Eigen val of mat a) is approx: -5 -5
-Eigen val of mat b) is approx: 1 0.166667
-Eigen val of mat c) is approx: 1 -0.25
-Eigen val of mat d) is approx: 10000 -0.200004
-Eigen val of mat e) is approx: 10000 0.199996
-Eigen val of mat f) is approx: 0.313471 -0.313471
