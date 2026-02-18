@@ -4,7 +4,7 @@
 
 ## Tech
 
-- **Language** C++23
+- **Language** C++23 with clang++ compiler
 - **Linear Algebra Library** Eigen 5
 - **Visualisations** Python (Pandas & Numpy & Matplotlib)
 - **Typesetting** Typst (Reports)
